@@ -18,7 +18,7 @@
 
     <ItemGroup>
       <None Update="Resources\Transactions2014.csv">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Resources\DodgyTransactions2015.csv">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
