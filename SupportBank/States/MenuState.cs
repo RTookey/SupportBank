@@ -16,10 +16,14 @@ public class MenuState : State
         if (Int32.TryParse(userInput, out int userInputInt))
         {
             if (userInputInt == 1) _application.CurrentState = new ViewAllState(_application);
-            if (userInputInt == 2) _application.CurrentState = new ViewCustomerState(_application);
-            if (userInputInt == 3) _application.Stop();
+            else if (userInputInt == 2) _application.CurrentState = new ViewCustomerState(_application);
+            else if (userInputInt == 3) _application.Stop();
+            else Console.WriteLine("Sorry, we didn't get that!");
         }
-        Console.WriteLine("Sorry, we didn't get that!");
+        else
+        {
+            Console.WriteLine("Sorry, we didn't get that!");
+        }
     }
      
 }

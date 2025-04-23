@@ -3,7 +3,7 @@
 public class BankManager
 {
     
-    public List<Person> Customers { get; set; }
+    public List<Person> Customers { get; set; } = new List<Person>();
     
     public List<Transaction> Transactions { get; set; }
 

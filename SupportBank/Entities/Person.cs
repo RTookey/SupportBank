@@ -2,13 +2,12 @@
 
 public class Person
 {
-    // public long Id { get; set; }
     
     public String Name { get; set; }
     
-    private List<Transaction> MoneySent { get; set; }
+    public List<Transaction> MoneySent { get; private set; } = new List<Transaction>();
     
-    private List<Transaction> MoneyReceived { get; set; }
+    public List<Transaction> MoneyReceived { get; private set; } = new List<Transaction>();
 
     public decimal Money { get; private set; } 
 
@@ -32,5 +31,9 @@ public class Person
         }
     }
 
+    public override string ToString()
+    {
+        return $"Name: {Name}, Money: {Money}";
+    }
 
 }

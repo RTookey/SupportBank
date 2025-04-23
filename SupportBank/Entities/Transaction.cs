@@ -2,9 +2,6 @@
 
 public class Transaction
 {
-    // public long Id { get; set; }
-    
-    // change this back to date? 
     public String Date { get; set; }
 
     public String From { get; set; }
