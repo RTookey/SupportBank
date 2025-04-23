@@ -12,5 +12,6 @@ var target = new FileTarget { FileName = @"C:\Work\Logs\SupportBank.log", Layout
 config.AddTarget("File Logger", target);
 config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, target));
 LogManager.Configuration = config;
+
 SupportBankApplication application = new ();
 application.Run();

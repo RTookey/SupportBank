@@ -4,9 +4,7 @@ namespace SupportBank.Utility;
 
 public static class FileHandler
 {
-    // add multiple csvs in 
-    public const string Path = "Resources/DodgyTransactions2015.csv";
-
+    
     private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
     
     public static DateTime ParseDate(string date)
@@ -15,19 +13,21 @@ public static class FileHandler
         {
             return convertedDate;
         }
-        else
-        {
-            return DateTime.MinValue; 
-        }
+        return DateTime.MinValue; 
+    }
+
+    public static void ReadAllTransactionsJson(string filePath)
+    {
+        
     }
     
     
-    public static List<Transaction> ReadAllTransactions()
+    public static List<Transaction> ReadAllTransactionsCSV(String path)
     {
         List<Transaction> transactions = new List<Transaction>();
 
         int lineNumber = 0;
-        using (StreamReader reader = new StreamReader(Path))
+        using (StreamReader reader = new StreamReader(path))
         {
             while (!reader.EndOfStream)
             {
