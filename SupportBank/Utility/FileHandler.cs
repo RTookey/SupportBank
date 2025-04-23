@@ -1,9 +1,4 @@
-﻿using System.Globalization;
-using System;
-using System.Globalization;
-using System.IO;
-using CsvHelper;
-using NLog;
+﻿using NLog;
 
 namespace SupportBank.Utility;
 
@@ -43,7 +38,7 @@ public static class FileHandler
                 newTransaction.From = values[1];
                 newTransaction.To = values[2];
                 newTransaction.Narrative = values[3];
-                if (Int32.TryParse(values[4], out int amount))
+                if (Decimal.TryParse(values[4], out Decimal amount))
                 {
                     newTransaction.Amount = amount;
                     transactions.Add(newTransaction);
