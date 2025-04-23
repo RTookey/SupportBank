@@ -2,24 +2,59 @@
 using System;
 using System.Globalization;
 using System.IO;
-using CsvHelper; 
+using CsvHelper;
+using NLog;
 
 namespace SupportBank.Utility;
 
 public static class FileHandler
 {
-    public const string Path = "Resources/Transactions2014.csv";
+    public const string Path = "Resources/DodgyTransactions2015.csv";
 
+    private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
+    
+    public static DateTime ParseDate(string date)
+    {
+        if (DateTime.TryParse(date, out DateTime convertedDate))
+        {
+            return convertedDate;
+        }
+        else
+        {
+            return DateTime.MinValue; 
+        }
+    }
+    
+    
     public static List<Transaction> ReadAllTransactions()
     {
         List<Transaction> transactions = new List<Transaction>();
-        
-        using (var reader = new StreamReader(Path))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+
+        int lineNumber = 0;
+        using (StreamReader reader = new StreamReader(Path))
         {
-            transactions = csv.GetRecords<Transaction>().ToList();
+            while (!reader.EndOfStream)
+            {   
+                lineNumber++;
+                string line = reader.ReadLine();
+                string[] values = line.Split(',');
+                Transaction newTransaction = new Transaction();
+                newTransaction.Date = ParseDate(values[0]);
+                newTransaction.From = values[1];
+                newTransaction.To = values[2];
+                newTransaction.Narrative = values[3];
+                if (Int32.TryParse(values[4], out int amount))
+                {
+                    newTransaction.Amount = amount;
+                    transactions.Add(newTransaction);
+                }
+                else
+                {
+                    logger.Log(LogLevel.Error, "Could not parse transaction number: " + line);
+                }
+            }
         }
-        
+
         return transactions;
     }
     

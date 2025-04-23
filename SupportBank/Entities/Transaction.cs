@@ -2,7 +2,7 @@
 
 public class Transaction
 {
-    public String Date { get; set; }
+    public DateTime Date { get; set; }
 
     public String From { get; set; }
     
