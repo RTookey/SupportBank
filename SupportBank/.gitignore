@@ -12,3 +12,7 @@
 /dataSources/
 /dataSources.local.xml
 .idea
+.idea/.idea.SupportBank/.idea
+.idea/.idea.SupportBank/.idea/.gitignore
+obj/Debug/net9.0
+SupportBank.AssemblyInfo.cs
