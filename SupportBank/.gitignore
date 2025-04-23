@@ -16,3 +16,5 @@
 .idea/.idea.SupportBank/.idea/.gitignore
 obj/Debug/net9.0
 SupportBank.AssemblyInfo.cs
+bin/Debug/net9.0/Resources
+bin/Debug/net9.0/Resources/Transactions2014.csv
