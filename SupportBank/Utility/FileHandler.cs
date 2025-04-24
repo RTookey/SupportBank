@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System.Text.Json;
+using NLog;
 
 namespace SupportBank.Utility;
 
@@ -16,18 +17,28 @@ public static class FileHandler
         return DateTime.MinValue; 
     }
 
-    public static void ReadAllTransactionsJson(string filePath)
+    public static List<Transaction> ReadAllTransactionsJson(string filePath)
     {
-        
+        List<Transaction> transactions = new List<Transaction>();
+        try
+        {
+            string jsonString = File.ReadAllText(filePath);
+            transactions = JsonSerializer.Deserialize<List<Transaction>>(jsonString);
+        }
+        catch (Exception e)
+        {
+            logger.Log(LogLevel.Error, "Could not parse Json object. Error " + e.Message);
+        } 
+        return transactions;
     }
     
     
-    public static List<Transaction> ReadAllTransactionsCSV(String path)
+    public static List<Transaction> ReadAllTransactionsCSV(String filePath)
     {
         List<Transaction> transactions = new List<Transaction>();
 
         int lineNumber = 0;
-        using (StreamReader reader = new StreamReader(path))
+        using (StreamReader reader = new StreamReader(filePath))
         {
             while (!reader.EndOfStream)
             {

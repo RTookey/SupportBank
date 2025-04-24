@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <PackageReference Include="CsvHelper" Version="33.0.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="NLog" Version="5.4.0" />
     </ItemGroup>
 
@@ -22,6 +23,9 @@
       </None>
       <None Update="Resources\DodgyTransactions2015.csv">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Transactions2013.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

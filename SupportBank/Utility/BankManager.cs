@@ -28,8 +28,9 @@ public class BankManager
 
     public void GetAllCustomers()
     {
-        Transactions = FileHandler.ReadAllTransactionsCSV("./Resources/Transactions2014.csv");
-        Transactions.AddRange(FileHandler.ReadAllTransactionsCSV("./Resources/DodgyTransactions2015.csv"));
+        // Transactions = FileHandler.ReadAllTransactionsCSV("./Resources/Transactions2014.csv");
+        // Transactions.AddRange(FileHandler.ReadAllTransactionsCSV("./Resources/DodgyTransactions2015.csv"));
+        Transactions = FileHandler.ReadAllTransactionsJson("./Resources/Transactions2013.json");
         foreach (var item in Transactions)
         {
             Person sender = GetCustomer(item.To);
