@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using NLog;
 
@@ -8,29 +9,56 @@ public static class FileHandler
 {
     
     private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-    
 
-
-    public static List<Transaction> ReadAllTransactionsXML(string fileName)
+    public static List<Transaction> LoadFile(string fileName)
     {
-        var serializer = new XmlSerializer(typeof(TransactionList));
-        using (var reader = new StreamReader(fileName))
+        List<Transaction> transactions = new List<Transaction>();
+        Regex csvRegex = new Regex(@"\.csv$", RegexOptions.IgnoreCase);
+        if (csvRegex.IsMatch(fileName))
         {
-            TransactionList transactionsXML = (TransactionList)serializer.Deserialize(reader);
-            List<Transaction> transactions = new List<Transaction>();
-
-            foreach (var item in transactionsXML.Transactions)
-            {
-                Transaction currentTransaction = new Transaction(item);
-                transactions.Add(currentTransaction);
-            }
-
-            return transactions;
+            transactions = ReadAllTransactionsCSV(fileName);
         }
+        Regex jsonRegex = new Regex(@"\.json", RegexOptions.IgnoreCase);
+        if (jsonRegex.IsMatch(fileName))
+        {
+            transactions = ReadAllTransactionsJson(fileName);
+        }
+        Regex xmlRegex = new Regex(@"\.xml", RegexOptions.IgnoreCase);
+        if (xmlRegex.IsMatch(fileName))
+        {
+            transactions = ReadAllTransactionsXML(fileName);
+        }
+        return transactions;
     }
     
     
+    public static List<Transaction> ReadAllTransactionsXML(string fileName)
+    {
+        List<Transaction> transactions = new List<Transaction>();
+        var serializer = new XmlSerializer(typeof(TransactionList));
 
+        try
+        {
+            using (var reader = new StreamReader(fileName))
+            {
+                TransactionList transactionsXML = (TransactionList)serializer.Deserialize(reader);
+                transactions = new List<Transaction>();
+                foreach (var item in transactionsXML.Transactions)
+                {
+                    Transaction currentTransaction = new Transaction(item);
+                    transactions.Add(currentTransaction);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            logger.Log(LogLevel.Error, "Could not parse Json object. Error " + e.Message);
+        }
+        return transactions;
+        
+    }
+    
+    
     public static List<Transaction> ReadAllTransactionsJson(string filePath)
     {
         List<Transaction> transactions = new List<Transaction>();
@@ -47,7 +75,7 @@ public static class FileHandler
     }
     
     
-    public static List<Transaction> ReadAllTransactionsCSV(String filePath)
+    public static List<Transaction> ReadAllTransactionsCSV(string filePath)
     {
         List<Transaction> transactions = new List<Transaction>();
 

@@ -8,11 +8,7 @@ public class BankManager
     public List<Person> Customers { get; set; } = new List<Person>();
     
     public List<Transaction> Transactions { get; set; } = new List<Transaction>();
-
-    public BankManager()
-    {   
-    }
-
+    
     public Person GetCustomer(String name)
     {
         if (Customers.Any(c => c.Name == name))
@@ -27,27 +23,6 @@ public class BankManager
         }
     }
     
-
-    public void LoadFile(string fileName)
-    {
-        Regex csvRegex = new Regex(@"\.csv$", RegexOptions.IgnoreCase);
-        if (csvRegex.IsMatch(fileName))
-        {
-            Transactions.AddRange(FileHandler.ReadAllTransactionsCSV(fileName));
-        }
-        Regex jsonRegex = new Regex(@"\.json", RegexOptions.IgnoreCase);
-        if (jsonRegex.IsMatch(fileName))
-        {
-            Transactions.AddRange(FileHandler.ReadAllTransactionsJson(fileName));
-        }
-        Regex xmlRegex = new Regex(@"\.xml", RegexOptions.IgnoreCase);
-        if (xmlRegex.IsMatch(fileName))
-        {
-            Transactions.AddRange(FileHandler.ReadAllTransactionsXML(fileName));
-        }
-        GetAllCustomers();
-    }
-
     public void GetAllCustomers()
     {
         foreach (var item in Transactions)
@@ -59,4 +34,19 @@ public class BankManager
         }
     }
     
+    public string LoadFile(string fileName)
+    {
+        List<Transaction> newTransactions = new List<Transaction>();
+        newTransactions = FileHandler.LoadFile(fileName);
+        if (newTransactions.Count > 0)
+        {
+            Transactions.AddRange(FileHandler.LoadFile(fileName));
+            GetAllCustomers();
+            return "File successfully loaded";
+        }
+
+        return "File unable to be loaded";
+
+    }
+
 }

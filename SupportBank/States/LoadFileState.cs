@@ -11,9 +11,10 @@ public class LoadFileState : State
         Console.WriteLine("Enter the path and name of the file you would like to load");
         String userInput = Console.ReadLine();
         String userInputTrim = userInput.Trim();
-        if (File.Exists(userInput))
+        if (File.Exists(userInputTrim))
         {
-            _application.BankManager.LoadFile(userInput);
+            string successMessage = _application.BankManager.LoadFile(userInputTrim);
+            Console.WriteLine(successMessage);
         }
         else
         {
