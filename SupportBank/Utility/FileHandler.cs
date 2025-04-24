@@ -9,14 +9,6 @@ public static class FileHandler
     
     private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
     
-    public static DateTime ParseDate(string date)
-    {
-        if (DateTime.TryParse(date, out DateTime convertedDate))
-        {
-            return convertedDate;
-        }
-        return DateTime.MinValue; 
-    }
 
 
     public static List<Transaction> ReadAllTransactionsXML(string fileName)
@@ -70,7 +62,7 @@ public static class FileHandler
                 {
                     string[] values = line.Split(',');
                     Transaction newTransaction = new Transaction();
-                    newTransaction.Date = ParseDate(values[0]);
+                    newTransaction.Date = DateConvertor.ParseDate(values[0]);
                     newTransaction.From = values[1];
                     newTransaction.To = values[2];
                     newTransaction.Narrative = values[3];
