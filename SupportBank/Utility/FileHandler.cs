@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Xml.Serialization;
 using NLog;
 
 namespace SupportBank.Utility;
@@ -20,8 +21,22 @@ public static class FileHandler
 
     public static List<Transaction> ReadAllTransactionsXML(string fileName)
     {
-        return new List<Transaction>();
+        var serializer = new XmlSerializer(typeof(TransactionList));
+        using (var reader = new StreamReader(fileName))
+        {
+            TransactionList transactionsXML = (TransactionList)serializer.Deserialize(reader);
+            List<Transaction> transactions = new List<Transaction>();
+
+            foreach (var item in transactionsXML.Transactions)
+            {
+                Transaction currentTransaction = new Transaction(item);
+                transactions.Add(currentTransaction);
+            }
+
+            return transactions;
+        }
     }
+    
     
 
     public static List<Transaction> ReadAllTransactionsJson(string filePath)
