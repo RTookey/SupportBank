@@ -17,6 +17,13 @@ public static class FileHandler
         return DateTime.MinValue; 
     }
 
+
+    public static List<Transaction> ReadAllTransactionsXML(string fileName)
+    {
+        return new List<Transaction>();
+    }
+    
+
     public static List<Transaction> ReadAllTransactionsJson(string filePath)
     {
         List<Transaction> transactions = new List<Transaction>();
