@@ -18,12 +18,28 @@ public class MenuState : State
         if (Int32.TryParse(userInput, out int userInputInt))
         {
             // change to switch case 
-            if (userInputInt == 1) _application.CurrentState = new ViewAllState(_application);
-            else if (userInputInt == 2) _application.CurrentState = new ViewCustomerState(_application);
-            else if (userInputInt == 3) _application.CurrentState = new LoadFileState(_application);
-            else if (userInputInt == 4) _application.CurrentState = new WriteFileState(_application);
-            else if (userInputInt == 5) _application.Stop();
-            else Console.WriteLine("Sorry, we didn't get that!");
+            Console.Clear();
+            switch (userInputInt)
+            {
+                case 1: 
+                    _application.CurrentState = new ViewAllState(_application);
+                    break;
+                case 2:
+                    _application.CurrentState = new ViewCustomerState(_application);
+                    break;  
+                case 3:
+                    _application.CurrentState = new LoadFileState(_application);
+                    break;
+                case 4:
+                    _application.CurrentState = new WriteFileState(_application);
+                    break;
+                case 5:
+                    _application.Stop();
+                    break;
+                default:
+                    Console.WriteLine("Sorry, we didn't get that!");
+                    break;
+            }
         }
         else
         {

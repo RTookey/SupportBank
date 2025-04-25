@@ -99,7 +99,15 @@ public static class FileHandler
     
     public static void WriteAllTransactionsJson(List<Transaction> transactions)
     {
-        
+        try
+        {
+            string json = JsonSerializer.Serialize(transactions);
+            File.WriteAllText("./Resources/AllTransactions.json", json);
+        }
+        catch (Exception e)
+        {
+            logger.Log(LogLevel.Error, "Error writing to JSON file: " + e.Message);
+        }
     }
     
     public static void WriteAllTransactionsXml(List<Transaction> transactions)

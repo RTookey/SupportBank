@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using SupportBank.Enums;
+﻿using SupportBank.Enums;
 
 namespace SupportBank.Utility;
 
@@ -16,12 +15,9 @@ public class BankManager
         {
             return Customers.First(c => c.Name == name);
         }
-        else
-        {
-            Person newCustomer = new Person(name);
-            Customers.Add(newCustomer);
-            return newCustomer;
-        }
+        Person newCustomer = new Person(name);
+        Customers.Add(newCustomer);
+        return newCustomer;
     }
     
     public void GetAllCustomers()
@@ -45,8 +41,7 @@ public class BankManager
             GetAllCustomers();
             return "File successfully loaded";
         }
-
-        return "File unable to be loaded";
+        return "No data loaded";
 
     }
 
@@ -65,10 +60,9 @@ public class BankManager
                 case FileType.XML:
                     return FileHandler.ReadAllTransactionsXml(fileName);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(FileType), $"Not expected direction value: {fileEndingEnum}");
+                    throw new ArgumentOutOfRangeException(nameof(FileType), $"Not valid filetype: {fileEndingEnum}");
             }
         }
-
         return new List<Transaction>();
     }
     
@@ -87,7 +81,7 @@ public class BankManager
                 FileHandler.WriteAllTransactionsXml(Transactions);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(FileType), $"Not expected direction value: {fileType}");
+                throw new ArgumentOutOfRangeException(nameof(FileType), $"Not valid filetype: {fileType}");
         }
     }
 }   
