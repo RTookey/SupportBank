@@ -1,6 +1,6 @@
 ﻿namespace SupportBank.Utility;
 
-public class Person
+public class Customer
 {
     
     public String Name { get; set; }
@@ -11,7 +11,7 @@ public class Person
 
     public decimal Money { get; private set; } 
 
-    public Person(String name)
+    public Customer(String name)
     {
         Name = name;
         Money = 0; 

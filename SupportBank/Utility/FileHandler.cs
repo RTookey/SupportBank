@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using NLog;
 
@@ -10,48 +11,6 @@ public static class FileHandler
     
     private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
     
-    public static List<Transaction> ReadAllTransactionsXml(string fileName)
-    {
-        List<Transaction> transactions = new List<Transaction>();
-        var serializer = new XmlSerializer(typeof(TransactionList));
-
-        try
-        {
-            using (var reader = new StreamReader(fileName))
-            {
-                TransactionList transactionsXML = (TransactionList)serializer.Deserialize(reader);
-                transactions = new List<Transaction>();
-                foreach (var item in transactionsXML.Transactions)
-                {
-                    Transaction currentTransaction = new Transaction(item);
-                    transactions.Add(currentTransaction);
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            logger.Log(LogLevel.Error, "Could not parse Json object. Error " + e.Message);
-        }
-        return transactions;
-        
-    }
-    
-    
-    public static List<Transaction> ReadAllTransactionsJson(string filePath)
-    {
-        List<Transaction> transactions = new List<Transaction>();
-        try
-        {
-            string jsonString = File.ReadAllText(filePath);
-            transactions = JsonSerializer.Deserialize<List<Transaction>>(jsonString);
-        }
-        catch (Exception e)
-        {
-            logger.Log(LogLevel.Error, "Could not parse Json object. Error " + e.Message);
-        } 
-        return transactions;
-    }
-
     public static bool ValidCSV(string value)
     {
         return Decimal.TryParse(value, out _); 
@@ -102,6 +61,50 @@ public static class FileHandler
 
         return transactions;
     }
+    
+    public static List<Transaction> ReadAllTransactionsXml(string fileName)
+    {
+        List<Transaction> transactions = new List<Transaction>();
+        var serializer = new XmlSerializer(typeof(TransactionList));
+
+        try
+        {
+            using (var reader = new StreamReader(fileName))
+            {
+                TransactionList transactionsXML = (TransactionList)serializer.Deserialize(reader);
+                transactions = new List<Transaction>();
+                foreach (var item in transactionsXML.Transactions)
+                {
+                    Transaction currentTransaction = new Transaction(item);
+                    transactions.Add(currentTransaction);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            logger.Log(LogLevel.Error, "Could not parse Json object. Error " + e.Message);
+        }
+        return transactions;
+        
+    }
+    
+    
+    public static List<Transaction> ReadAllTransactionsJson(string filePath)
+    {
+        List<Transaction> transactions = new List<Transaction>();
+        try
+        {
+            string jsonString = File.ReadAllText(filePath);
+            transactions = JsonSerializer.Deserialize<List<Transaction>>(jsonString);
+        }
+        catch (Exception e)
+        {
+            logger.Log(LogLevel.Error, "Could not parse Json object. Error " + e.Message);
+        } 
+        return transactions;
+    }
+
+    
 
     public static void WriteAllTransactionsCsv(List<Transaction> transactions)
     {
@@ -137,7 +140,26 @@ public static class FileHandler
 
     public static void WriteAllTransactionsXml(List<Transaction> transactions)
     {
-       
+        try
+        {
+
+            var xmlTransactions = new XDocument(
+                new XElement("AllTransactions",
+                    from transact in transactions
+                    select new XElement("Transaction",
+                        new XElement("Date", transact.Date),
+                        new XElement("From", transact.From),
+                        new XElement("To", transact.To),
+                        new XElement("Narrative", transact.Narrative),
+                        new XElement("Amount", transact.Amount)
+                    )));
+            xmlTransactions.Save("./Resources/AllTransactions.xml");
+        }
+        catch (Exception e)
+        {
+            logger.Log(LogLevel.Error, "Error writing to XML file: " + e.Message);
+        }
+        
     }
 
 }

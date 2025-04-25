@@ -15,7 +15,7 @@ public class ViewCustomerState : State
         String userInputTrim = userInput.Trim();
         if (_application.BankManager.Customers.Any(c => c.Name == userInputTrim))
         {
-            Person userCustomer = _application.BankManager.Customers.First(c => c.Name == userInputTrim);
+            Customer userCustomer = _application.BankManager.Customers.First(c => c.Name == userInputTrim);
             Console.WriteLine($"Transactions for {userCustomer.ToString()}");
             Console.WriteLine("Money sent:");
             foreach (var transaction in userCustomer.MoneySent)
