@@ -51,42 +51,53 @@ public static class FileHandler
         } 
         return transactions;
     }
-    
+
+    public static bool ValidCSV(string value)
+    {
+        return Decimal.TryParse(value, out _); 
+    }
+
+    public static Transaction CSVToTransaction(string[] values)
+    {
+        Transaction newTransaction = new Transaction()
+        {
+            Date = DateConvertor.ParseDate(values[0]),
+            From = values[1],
+            To = values[2],
+            Narrative = values[3],
+            Amount = Decimal.Parse(values[4])
+        };
+        return newTransaction;
+    }
     
     public static List<Transaction> ReadAllTransactionsCsv(string filePath)
     {
         List<Transaction> transactions = new List<Transaction>();
 
         int lineNumber = 0;
-        using (StreamReader reader = new StreamReader(filePath))
+        try
         {
-            while (!reader.EndOfStream)
+            using (StreamReader reader = new StreamReader(filePath))
             {
-                lineNumber++;
-                string line = reader.ReadLine();
-                try
+                while (!reader.EndOfStream)
                 {
+                    lineNumber++;
+                    string line = reader.ReadLine();
                     string[] values = line.Split(',');
-                    Transaction newTransaction = new Transaction();
-                    newTransaction.Date = DateConvertor.ParseDate(values[0]);
-                    newTransaction.From = values[1];
-                    newTransaction.To = values[2];
-                    newTransaction.Narrative = values[3];
-                    if (Decimal.TryParse(values[4], out Decimal amount))
+                    if (ValidCSV(values[4]))
                     {
-                        newTransaction.Amount = amount;
-                        transactions.Add(newTransaction);
+                        transactions.Add(CSVToTransaction(values));
                     }
                     else
                     {
                         logger.Log(LogLevel.Error, "Could not parse transaction number: " + line);
                     }
                 }
-                catch (Exception e)
-                {
-                    logger.Log(LogLevel.Error, $"Could not parse {line}: e.Message");
-                }
             }
+        }
+        catch (Exception e)
+        {
+            logger.Log(LogLevel.Error, "Error reading CSV file" + e.Message);
         }
 
         return transactions;
