@@ -1,4 +1,4 @@
-﻿namespace SupportBank.Enum;
+﻿namespace SupportBank.Enums;
 
 public enum FileType
 {

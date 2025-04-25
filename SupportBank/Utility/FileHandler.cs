@@ -9,28 +9,6 @@ public static class FileHandler
 {
     
     private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
-
-    public static List<Transaction> LoadFile(string fileName)
-    {
-        List<Transaction> transactions = new List<Transaction>();
-        Regex csvRegex = new Regex(@"\.csv$", RegexOptions.IgnoreCase);
-        if (csvRegex.IsMatch(fileName))
-        {
-            transactions = ReadAllTransactionsCsv(fileName);
-        }
-        Regex jsonRegex = new Regex(@"\.json$", RegexOptions.IgnoreCase);
-        if (jsonRegex.IsMatch(fileName))
-        {
-            transactions = ReadAllTransactionsJson(fileName);
-        }
-        Regex xmlRegex = new Regex(@"\.xml$", RegexOptions.IgnoreCase);
-        if (xmlRegex.IsMatch(fileName))
-        {
-            transactions = ReadAllTransactionsXml(fileName);
-        }
-        return transactions;
-    }
-    
     
     public static List<Transaction> ReadAllTransactionsXml(string fileName)
     {
@@ -112,6 +90,21 @@ public static class FileHandler
         }
 
         return transactions;
+    }
+
+    public static void WriteAllTransactionsCsv(List<Transaction> transactions)
+    {
+        
+    }
+    
+    public static void WriteAllTransactionsJson(List<Transaction> transactions)
+    {
+        
+    }
+    
+    public static void WriteAllTransactionsXml(List<Transaction> transactions)
+    {
+        
     }
     
 }

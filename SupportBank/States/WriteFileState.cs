@@ -1,4 +1,4 @@
-﻿using SupportBank.Enum;
+﻿using SupportBank.Enums;
 
 namespace SupportBank.States;
 

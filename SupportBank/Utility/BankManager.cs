@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using SupportBank.Enum;
+using SupportBank.Enums;
 
 namespace SupportBank.Utility;
 
@@ -38,10 +38,10 @@ public class BankManager
     public string LoadFile(string fileName)
     {
         List<Transaction> newTransactions = new List<Transaction>();
-        newTransactions = FileHandler.LoadFile(fileName);
+        newTransactions = LoadFileByType(fileName);
         if (newTransactions.Count > 0)
         {
-            Transactions.AddRange(FileHandler.LoadFile(fileName));
+            Transactions.AddRange(newTransactions);
             GetAllCustomers();
             return "File successfully loaded";
         }
@@ -49,11 +49,45 @@ public class BankManager
         return "File unable to be loaded";
 
     }
-    
-    public void WriteFile(FileType fileType){
-        // write to file of choosing 
-        
-        
-    }
 
-}
+    public List<Transaction> LoadFileByType(string fileName)
+    {
+        int position = fileName.LastIndexOf('.');
+        string fileEnding = fileName.Substring(position + 1).ToUpper();
+        if (Enum.TryParse(fileEnding, out FileType fileEndingEnum))
+        {
+            switch (fileEndingEnum)
+            {
+                case FileType.CSV:
+                    return FileHandler.ReadAllTransactionsCsv(fileName);
+                case FileType.JSON:
+                    return FileHandler.ReadAllTransactionsJson(fileName);
+                case FileType.XML:
+                    return FileHandler.ReadAllTransactionsXml(fileName);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(FileType), $"Not expected direction value: {fileEndingEnum}");
+            }
+        }
+
+        return new List<Transaction>();
+    }
+    
+    
+    public void WriteFile(FileType fileType)
+    {
+        switch (fileType)
+        {
+            case FileType.CSV:
+                FileHandler.WriteAllTransactionsCsv(Transactions);
+                break; 
+            case FileType.JSON:
+                FileHandler.WriteAllTransactionsJson(Transactions);
+                break;
+            case FileType.XML:
+                FileHandler.WriteAllTransactionsXml(Transactions);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(FileType), $"Not expected direction value: {fileType}");
+        }
+    }
+}   
