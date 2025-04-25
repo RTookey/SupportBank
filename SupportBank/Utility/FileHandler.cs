@@ -94,7 +94,21 @@ public static class FileHandler
 
     public static void WriteAllTransactionsCsv(List<Transaction> transactions)
     {
-        
+        try
+        {
+            using (StreamWriter writer = new StreamWriter("./Resources/AllTransactions.csv"))
+            {
+                writer.WriteLine("Date,FromAccount,ToAccount,Narrative,Amount");
+                foreach (var item in transactions)
+                {
+                    writer.WriteLine($"{item.Date},{item.From},{item.To},{item.Narrative},{item.Amount}");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            logger.Log(LogLevel.Error, "Error writing to CSV file: " + e.Message);
+        }
     }
     
     public static void WriteAllTransactionsJson(List<Transaction> transactions)
@@ -109,10 +123,10 @@ public static class FileHandler
             logger.Log(LogLevel.Error, "Error writing to JSON file: " + e.Message);
         }
     }
-    
+
     public static void WriteAllTransactionsXml(List<Transaction> transactions)
     {
-        
+       
     }
-    
+
 }
