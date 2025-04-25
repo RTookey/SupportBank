@@ -16,23 +16,23 @@ public static class FileHandler
         Regex csvRegex = new Regex(@"\.csv$", RegexOptions.IgnoreCase);
         if (csvRegex.IsMatch(fileName))
         {
-            transactions = ReadAllTransactionsCSV(fileName);
+            transactions = ReadAllTransactionsCsv(fileName);
         }
-        Regex jsonRegex = new Regex(@"\.json", RegexOptions.IgnoreCase);
+        Regex jsonRegex = new Regex(@"\.json$", RegexOptions.IgnoreCase);
         if (jsonRegex.IsMatch(fileName))
         {
             transactions = ReadAllTransactionsJson(fileName);
         }
-        Regex xmlRegex = new Regex(@"\.xml", RegexOptions.IgnoreCase);
+        Regex xmlRegex = new Regex(@"\.xml$", RegexOptions.IgnoreCase);
         if (xmlRegex.IsMatch(fileName))
         {
-            transactions = ReadAllTransactionsXML(fileName);
+            transactions = ReadAllTransactionsXml(fileName);
         }
         return transactions;
     }
     
     
-    public static List<Transaction> ReadAllTransactionsXML(string fileName)
+    public static List<Transaction> ReadAllTransactionsXml(string fileName)
     {
         List<Transaction> transactions = new List<Transaction>();
         var serializer = new XmlSerializer(typeof(TransactionList));
@@ -75,7 +75,7 @@ public static class FileHandler
     }
     
     
-    public static List<Transaction> ReadAllTransactionsCSV(string filePath)
+    public static List<Transaction> ReadAllTransactionsCsv(string filePath)
     {
         List<Transaction> transactions = new List<Transaction>();
 

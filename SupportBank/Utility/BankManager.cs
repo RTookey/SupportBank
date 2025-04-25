@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using SupportBank.Enum;
 
 namespace SupportBank.Utility;
 
@@ -47,6 +48,12 @@ public class BankManager
 
         return "File unable to be loaded";
 
+    }
+    
+    public void WriteFile(FileType fileType){
+        // write to file of choosing 
+        
+        
     }
 
 }
