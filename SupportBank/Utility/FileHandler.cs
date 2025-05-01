@@ -11,12 +11,12 @@ public static class FileHandler
     
     private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
     
-    public static bool ValidCSV(string value)
+    public static bool ValidAmount(string value)
     {
         return Decimal.TryParse(value, out _); 
     }
 
-    public static Transaction CSVToTransaction(string[] values)
+    public static Transaction CsvToTransaction(string[] values)
     {
         Transaction newTransaction = new Transaction()
         {
@@ -43,9 +43,9 @@ public static class FileHandler
                     lineNumber++;
                     string line = reader.ReadLine();
                     string[] values = line.Split(',');
-                    if (ValidCSV(values[4]))
+                    if (ValidAmount(values[4]))
                     {
-                        transactions.Add(CSVToTransaction(values));
+                        transactions.Add(CsvToTransaction(values));
                     }
                     else
                     {
@@ -142,7 +142,6 @@ public static class FileHandler
     {
         try
         {
-
             var xmlTransactions = new XDocument(
                 new XElement("AllTransactions",
                     from transact in transactions

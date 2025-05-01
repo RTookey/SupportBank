@@ -5,9 +5,9 @@ namespace SupportBank.Utility;
 public class BankManager
 {
     
-    public List<Customer> Customers { get; set; } = new List<Customer>();
+    public List<Customer> Customers { get; set; } = new ();
     
-    public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+    public List<Transaction> Transactions { get; set; } = new ();
     
     public Customer GetCustomer(String name)
     {
@@ -20,7 +20,7 @@ public class BankManager
         return newCustomer;
     }
     
-    public void GetAllCustomers()
+    public void LoadAllCustomers()
     {
         foreach (var item in Transactions)
         {
@@ -38,7 +38,7 @@ public class BankManager
         if (newTransactions.Count > 0)
         {
             Transactions.AddRange(newTransactions);
-            GetAllCustomers();
+            LoadAllCustomers();
             return "File successfully loaded";
         }
         return "No data loaded";
